@@ -1,3 +1,7 @@
+---
+title: "イントロダクション"
+---
+
 # Kuberntes実践入門
 
 :::message
