@@ -1,0 +1,10 @@
+title: "Python で始める非同期プログラミング"
+summary: ""
+topics: ["Python", "非同期プログラミング", "asyncio", "concurrent.futures"]
+published: false
+price: 0 # 有料の場合200〜5000
+# 本に含めるチャプターを順番に並べましょう
+chapters:
+  - 01_intro.md
+  - 02_basic.md
+  - 03_multithreading.md
