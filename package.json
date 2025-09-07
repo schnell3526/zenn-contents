@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/schnell3526/zenn-content#readme",
   "dependencies": {
-    "zenn-cli": "^0.1.159"
-  }
+    "zenn-cli": "^0.1.162"
+  },
+  "type": "commonjs"
 }
