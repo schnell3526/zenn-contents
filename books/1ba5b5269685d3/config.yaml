@@ -8,3 +8,6 @@ chapters:
   - 00_introduction
   - 01_setup_kind
   - 02_architecture
+  - 03_cluster_inspection
+  - 04_component_troubleshoot
+  - 05_object_model_practice
