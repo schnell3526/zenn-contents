@@ -1,4 +1,4 @@
-title: "Kuberntes実践入門"
+title: "Kubernetes実践入門"
 summary: "Kubernetesの基本的な概念から、実際の運用に役立つノウハウまでを網羅した実践的なガイドブックです。"
 topics: ["Kubernetes", "コンテナ", "Docker", "クラウドネイティブ"]
 published: false
@@ -6,4 +6,5 @@ price: 0 # 有料の場合200〜5000
 # 本に含めるチャプターを順番に並べましょう
 chapters:
   - 00_introduction
-  - 01_architecture
+  - 01_setup_kind
+  - 02_architecture
