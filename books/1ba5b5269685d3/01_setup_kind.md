@@ -2,15 +2,13 @@
 title: "kindクラスタセットアップガイド"
 ---
 
-# kindクラスタセットアップガイド
-
 この章では、Kubernetesの学習環境として**kind（Kubernetes IN Docker）**クラスタの構築方法を学びます。kindは軽量で学習目的に最適なローカルKubernetes環境を提供します。
 
-## kindとは
+# kindとは
 
 **kind**は、Dockerコンテナ内でKubernetesクラスタを実行するツールです。Kubernetesの学習、開発、CI/CDテストに適した環境を簡単に構築できます。
 
-### kindの特徴
+## kindの特徴
 
 - **軽量**: Dockerコンテナベースで高速起動
 - **シンプル**: 複雑な設定不要でクラスタ構築可能
@@ -18,19 +16,19 @@ title: "kindクラスタセットアップガイド"
 - **本格的**: 実際のKubernetes APIを使用
 - **クリーンアップ**: 完全な削除が簡単
 
-### なぜkindを選ぶのか
+## なぜkindを選ぶのか
 
-| 比較項目 | kind | minikube | kubeadm |
-|----------|------|----------|---------|
-| セットアップ | 簡単 | 簡単 | 複雑 |
-| リソース使用量 | 軽量 | 中程度 | 重い |
-| マルチノード | 対応 | 限定的 | 対応 |
-| 学習用途 | 最適 | 適している | 本格的 |
-| クリーンアップ | 簡単 | 簡単 | 手動 |
+| 比較項目       | kind | minikube   | kubeadm |
+| -------------- | ---- | ---------- | ------- |
+| セットアップ   | 簡単 | 簡単       | 複雑    |
+| リソース使用量 | 軽量 | 中程度     | 重い    |
+| マルチノード   | 対応 | 限定的     | 対応    |
+| 学習用途       | 最適 | 適している | 本格的  |
+| クリーンアップ | 簡単 | 簡単       | 手動    |
 
-## 前提条件
+# 前提条件
 
-### 必要なソフトウェア
+## 必要なソフトウェア
 
 以下のソフトウェアをインストールする必要があります：
 
@@ -38,17 +36,17 @@ title: "kindクラスタセットアップガイド"
 2. **kubectl**: Kubernetes CLI ツール
 3. **kind**: Kubernetes IN Docker
 
-### システム要件
+## システム要件
 
 - **メモリ**: 最低4GB、推奨8GB以上
 - **ディスク容量**: 10GB以上の空き容量
 - **OS**: macOS、Linux、Windows（WSL2）
 
-## インストール手順
+# インストール手順
 
-### 1. Dockerのインストール
+## 1. Dockerのインストール
 
-#### macOS（Homebrew使用）
+### macOS（Homebrew使用）
 ```bash
 # Docker Desktop をインストール
 brew install --cask docker
@@ -57,7 +55,7 @@ brew install --cask docker
 # https://docs.docker.com/docker-for-mac/install/
 ```
 
-#### Ubuntu/Debian
+### Ubuntu/Debian
 ```bash
 # パッケージを更新
 sudo apt-get update
@@ -69,7 +67,7 @@ sudo apt-get install docker.io
 sudo usermod -aG docker $USER
 ```
 
-#### インストール確認
+### インストール確認
 ```bash
 # Dockerバージョン確認
 docker --version
@@ -78,15 +76,15 @@ docker --version
 docker info
 ```
 
-### 2. kubectlのインストール
+## 2. kubectlのインストール
 
-#### macOS（Homebrew使用）
+### macOS（Homebrew使用）
 ```bash
 # kubectlをインストール
 brew install kubectl
 ```
 
-#### Linux
+### Linux
 ```bash
 # 最新バージョンを取得
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -95,21 +93,21 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
-#### インストール確認
+### インストール確認
 ```bash
 # kubectlバージョン確認
 kubectl version --client
 ```
 
-### 3. kindのインストール
+## 3. kindのインストール
 
-#### macOS（Homebrew使用）
+### macOS（Homebrew使用）
 ```bash
 # kindをインストール
 brew install kind
 ```
 
-#### Linux
+### Linux
 ```bash
 # 最新バージョンのkindを取得（v0.20.0の例）
 curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
@@ -121,15 +119,15 @@ chmod +x ./kind
 sudo mv ./kind /usr/local/bin/kind
 ```
 
-#### インストール確認
+### インストール確認
 ```bash
 # kindバージョン確認
 kind --version
 ```
 
-## 基本的なクラスタ作成
+# 基本的なクラスタ作成
 
-### シンプルなシングルノードクラスタ
+## シンプルなシングルノードクラスタ
 
 最も簡単なクラスタを作成します：
 
@@ -148,7 +146,7 @@ kind create cluster --name my-first-cluster
 # Set kubectl context to "kind-my-first-cluster"
 ```
 
-### クラスタ接続の確認
+## クラスタ接続の確認
 
 ```bash
 # クラスタ情報表示
@@ -162,7 +160,7 @@ kubectl get nodes
 # my-first-cluster-control-plane Ready    control-plane   2m    v1.27.3
 ```
 
-### 基本的な動作確認
+## 基本的な動作確認
 
 ```bash
 # システムPod一覧
@@ -175,9 +173,9 @@ kubectl get namespaces
 kubectl get events
 ```
 
-## カスタム設定でのクラスタ作成
+# カスタム設定でのクラスタ作成
 
-### 複数ノード構成
+## 複数ノード構成
 
 複数のWorker Nodeを含むクラスタを作成します：
 
@@ -201,7 +199,7 @@ kubectl get nodes
 # 4つのノード（1 control-plane + 3 worker）が表示される
 ```
 
-### ポートマッピング設定
+## ポートマッピング設定
 
 外部からクラスタにアクセスするための設定：
 
@@ -231,7 +229,7 @@ nodes:
 kind create cluster --name port-mapping --config port-mapping-config.yaml
 ```
 
-### カスタムイメージとマウント
+## カスタムイメージとマウント
 
 ```yaml
 # advanced-config.yaml
@@ -250,9 +248,9 @@ nodes:
     readOnly: true
 ```
 
-## 実践演習
+# 実践演習
 
-### 演習1: 最初のクラスタ作成
+## 演習1: 最初のクラスタ作成
 
 ```bash
 # ステップ1: クラスタ作成
@@ -265,7 +263,7 @@ kubectl cluster-info --context kind-k8s-training
 kubectl describe node k8s-training-control-plane
 ```
 
-### 演習2: Podのデプロイテスト
+## 演習2: Podのデプロイテスト
 
 ```bash
 # テスト用Podデプロイ
@@ -284,22 +282,40 @@ kubectl logs test-pod
 kubectl delete pod test-pod
 ```
 
-### 演習3: マルチノードクラスタでの分散確認
+## 演習3: マルチノードクラスタでの分散確認
 
 ```bash
+# マルチノードクラスタの作成
+kind create cluster --name multi-node --config - <<EOF
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
+- role: worker
+EOF
+
 # 複数Podデプロイ
-kubectl create deployment nginx-deployment --image=nginx --replicas=3
+kubectl create deployment nginx-deployment --image=nginx --replicas=3 --context kind-multi-node
 
 # Pod配置確認（ノード分散を確認）
-kubectl get pods -o wide
+kubectl get pods -o wide --context kind-multi-node
 
 # デプロイメント削除
-kubectl delete deployment nginx-deployment
+kubectl delete deployment nginx-deployment --context kind-multi-node
 ```
 
-## よく使用するkindコマンド
+終わったらリソースをクリーンナップしてください
 
-### クラスタ管理
+```bash
+kind delete cluster --name k8s-training
+kind delete cluster --name multi-node
+```
+
+# よく使用するkindコマンド
+
+## クラスタ管理
 
 ```bash
 # クラスタ作成
@@ -321,7 +337,7 @@ kind get clusters
 kind get kubeconfig --name <CLUSTER_NAME>
 ```
 
-### ノード操作
+## ノード操作
 
 ```bash
 # ノード一覧（Dockerコンテナとして）
@@ -335,7 +351,7 @@ docker exec -it <CLUSTER_NAME>-worker bash
 docker stats <CLUSTER_NAME>-control-plane
 ```
 
-### イメージ管理
+## イメージ管理
 
 ```bash
 # ローカルDockerイメージをkindクラスタに読み込み
@@ -346,18 +362,21 @@ kind load docker-image my-app:latest --name <CLUSTER_NAME>
 docker exec -it <CLUSTER_NAME>-control-plane crictl images | grep my-app
 ```
 
-## トラブルシューティング
+# トラブルシューティング
 
-### よくある問題と解決策
+## よくある問題と解決策
 
-#### 1. クラスタ作成時のポート競合
+### 1. クラスタ作成時のポート競合
 
-**問題**: 
+**問題**:
 ```
 ERROR: failed to create cluster: node(s) already exist for a cluster with the name "kind"
 ```
 
 **解決策**:
+
+同じ名前のクラスタがすでに作成されているので、既存のクラスタの名前を確認して削除するか異なる名前で作成します。
+
 ```bash
 # 既存クラスタの確認
 kind get clusters
@@ -369,11 +388,14 @@ kind delete cluster --name <EXISTING_CLUSTER>
 kind create cluster --name my-new-cluster
 ```
 
-#### 2. kubectlコンテキストの問題
+### 2. kubectlコンテキストの問題
 
 **問題**: `kubectl`コマンドが正しいクラスタに接続できない
 
 **解決策**:
+
+`kubectl` コマンドのコンテキストが間違っている可能性があるので正しいものを指定します。
+
 ```bash
 # 現在のコンテキスト確認
 kubectl config current-context
@@ -385,7 +407,7 @@ kubectl config get-contexts | grep kind
 kubectl config use-context kind-<CLUSTER_NAME>
 ```
 
-#### 3. イメージプルの問題
+### 3. イメージプルの問題
 
 **問題**: PodのイメージがPullできない
 
@@ -399,7 +421,7 @@ docker pull <IMAGE_NAME>
 kind load docker-image <IMAGE_NAME> --name <CLUSTER_NAME>
 ```
 
-#### 4. DNS解決の問題
+### 4. DNS解決の問題
 
 **問題**: Pod内からの名前解決が失敗する
 
@@ -415,9 +437,9 @@ kubectl logs -n kube-system deployment/coredns
 kubectl get configmap coredns -n kube-system -o yaml
 ```
 
-### ログとデバッグ
+## ログとデバッグ
 
-#### クラスタログの確認
+### クラスタログの確認
 
 ```bash
 # kindクラスタ全体のログをエクスポート
@@ -431,7 +453,7 @@ docker logs <CLUSTER_NAME>-worker
 kubectl logs -n kube-system <POD_NAME>
 ```
 
-#### リソース使用状況の確認
+### リソース使用状況の確認
 
 ```bash
 # コンテナリソース使用状況
@@ -442,9 +464,9 @@ kubectl top nodes
 kubectl top pods --all-namespaces
 ```
 
-### パフォーマンス最適化
+## パフォーマンス最適化
 
-#### Docker設定の調整
+### Docker設定の調整
 
 ```bash
 # Docker Desktop リソース設定を確認
@@ -456,7 +478,7 @@ kubectl top pods --all-namespaces
 # - Disk image size: 64GB以上
 ```
 
-#### kindクラスタのリソース制限
+### kindクラスタのリソース制限
 
 ```yaml
 # resource-limited-config.yaml
@@ -473,9 +495,9 @@ nodes:
       memory: 500Mi
 ```
 
-## 本番環境との違い
+# 本番環境との違い
 
-### kindクラスタの制限事項
+## kindクラスタの制限事項
 
 1. **シングルマシン**: 実際の分散環境ではない
 2. **永続化**: クラスタ削除でデータも消失
@@ -483,38 +505,38 @@ nodes:
 4. **スケール**: 大規模クラスタのシミュレーションには限界
 5. **セキュリティ**: 本番レベルのセキュリティ設定なし
 
-### 学習用途での活用方法
+## 学習用途での活用方法
 
-#### 利点
+### 利点
 - **軽量で高速**: 短時間でクラスタ構築・削除が可能
 - **実験環境**: 設定を変更して何度でも試行可能
 - **バージョンテスト**: 異なるKubernetesバージョンでのテストが容易
 - **CI/CD**: 自動テストパイプラインでの利用
 
-#### 推奨される使用方法
+### 推奨される使用方法
 - Kubernetesの基本概念学習
 - YAMLマニフェストの動作テスト
 - アプリケーションの開発・デバッグ
 - CRDやOperatorの開発
 
-#### 本番移行時の考慮事項
+### 本番移行時の考慮事項
 - 永続化ストレージの設計
 - 高可用性構成の検討
 - セキュリティポリシーの適用
 - モニタリング・ログ管理の設定
 
-## まとめ
+# まとめ
 
 この章では、kindを使用したKubernetes学習環境の構築方法を学習しました。
 
-### 重要なポイント
+## 重要なポイント
 - kindは学習に最適なローカルKubernetes環境
 - Docker、kubectl、kindの正しいインストールが必要
 - 設定ファイルでマルチノード構成も可能
 - トラブルシューティングのコマンドを理解する
 - 本番環境とは違う制限があることを理解する
 
-### 次のステップ
+## 次のステップ
 
 次の章では、kindクラスタを使用してKubernetesアーキテクチャの実際の動作を確認し、各コンポーネントの役割を詳しく学習します。
 
